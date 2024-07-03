@@ -18,3 +18,5 @@ Welcome to part three of the Python course!
     ```console
     dagster dev -m lesson_3_code
     ```
+5. Open http://localhost:3000/asset-groups in a browser, which should give you the following:
+    ![alt text](image.png)
