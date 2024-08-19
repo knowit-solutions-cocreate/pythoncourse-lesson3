@@ -7,7 +7,7 @@ setup(
     python_requires='>=3.12',
     packages=['lesson_3_code'],
     install_requires=[
-        'setuptools >= 68.2.2, < 69',
+        'setuptools >= 70, < 71',
         'sqlalchemy >= 2.0.30, < 2.1',
         'pandas >= 2.2.2, < 2.3',
         'requests >= 2.32.3',
