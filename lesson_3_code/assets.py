@@ -1,14 +1,14 @@
 import pandas as pd
-from dagster import asset
+from dagster import asset, get_dagster_logger
 
 
 @asset
 def people_raw() -> pd.DataFrame:
-    return pd.read_csv('data/people.csv')
+    return pd.read_csv('data/input/people.csv')
 
 @asset
 def planets_raw() -> pd.DataFrame:
-    return pd.read_csv('data/planets.csv')
+    return pd.read_csv('data/input/planets.csv')
 
 @asset
 def homeworlds_raw(people_raw: pd.DataFrame, planets_raw: pd.DataFrame) -> pd.DataFrame:
@@ -28,7 +28,7 @@ def homeworlds_clean(homeworlds_raw: pd.DataFrame) -> pd.DataFrame:
     looks_like_url = first_row.str.contains('https://', na=False)
     df = df.loc[:, ~looks_like_url]
 
-    df = df.replace(["unknown", "none", "null", "na", ""], None)
+    df = df.replace(['unknown', 'none', 'null', 'na', ''], None)
 
     df['height'] = pd.to_numeric(df['height'], downcast='integer')
     df['mass'] = pd.to_numeric(df['mass'].str.replace(',', ''), downcast='float')
