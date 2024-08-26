@@ -45,7 +45,7 @@ def planet_stats(homeworlds_clean: pd.DataFrame) -> pd.DataFrame:
 ### 3. Modify the IOManager persistence format
 Writing and reloading of data computed by the assets in this code base is handled by an IOManager defined in io.py. This programming model separates the (data engineering) concern of how data is stored from the (data science) concern of how it is computed.
 
-The current IOManager persists dataframes as comma-separated values. Let's tweak the PandasDataFrameIOManager to work with tab-separated .tsv files instead, as this is a little bit safer (in that fields will be able to contain commas) and may render more readably in our editor.
+The current IOManager persists dataframes as comma-separated values. Let's tweak the `PandasDataFrameIOManager` to work with tab-separated .tsv files instead, as this is a little bit safer (in that fields will be able to contain commas) and may render more readably in our editor.
 
 Hints:
 - study io.py to understand what needs to be modified
@@ -82,9 +82,14 @@ Hints:
 - not all ships have a list of pilots and not all people are pilots - whether you want to include people with a NULL ship value and/or vice versa is up to you
 
 
-### 2. Create an IO-manager
-**TODO** very brief suggestions for a database IO Manager that overwrites tables when materializing (need to mention `context.asset_key`)
+### 2. Create an IOManager that saves materializations as database tables
+Suppose our end users turn out to prefer SQL tables over files. Because Dagster separates the asset persistence code from the asset graph definition code, we can make this happen without modifying the latter at all. This task is to implement an IOManager that achieves it using SQLite, a `PandasDataFrameSQLiteIOManager`, say.
 
+Hints:
+- copy the code of `PandasDataFrameIOManager` as a starting point
+- set up and interact with a SQLite database as [shown in lesson 2](https://github.com/knowit-solutions-cocreate/pythoncourse-lesson2/tree/main)
+- in the IOManagers `handle_output` and `load_input` methods: write to and read from a table with the same name as the asset key
+- in `handle_output`: make sure the table gets removed or emptied if it already exists, to keep the pipeline conveniently rerunnable
 
 ## WIP Notes
 
