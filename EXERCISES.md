@@ -45,9 +45,32 @@ def planet_stats(homeworlds_clean: pd.DataFrame) -> pd.DataFrame:
 
 ## Bonus exercises
 
+### 1. Incorporate a new input asset directly connected to the Star Wars API
+Let's continue building assets! There are multiple endpoints in the Star Wars API that we have not explored yet. One is *ships*. Let's create an asset representing ships, hooked up to fetch data directly from the REST source, then join this with one of our existing assets to create a new *pilots* asset.
 
-### 1. Create a new input asset
-**TODO** ships
+#### a. Fetch data and construct dataframe from the the ships endpoint
+Hints: you may start with the asset stub below. Modify it to point towards `ships` instead of `vehicles` and to handle pagination as indicated by inline comments.
+```Python
+import requests
+
+@asset
+def vehicles_page_one() -> pd.DataFrame:
+    # NOTE SWAPI is paginated and this query will only return page 1
+    # TODO to gather everything, we may loop over pages 1, 2, ... until
+    # response_as_dict == {'detail': 'Not found'} then break
+    page = 1
+    response = requests.get(f'https://swapi.dev/api/vehicles?page={page}')
+    response_as_dict = response.json()
+    df = pd.DataFrame(response_as_dict['results'])
+    get_dagster_logger().debug(df)
+    return df
+```
+
+#### b. Join ships with people to create the pilots asset
+Hints:
+- start by writing the function signature (the `@asset` decorated `def pilots(...)` line) and have it appear in the GUI
+- there are examples of dataframe joins in the code of this as well as the previous lesson
+- not all ships have a list of pilots and not all people are pilots - whether you want to include people with a NULL ship value and/or vice versa is up to you
 
 
 ### 2. Create an IO-manager
