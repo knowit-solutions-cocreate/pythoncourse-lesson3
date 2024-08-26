@@ -1,10 +1,11 @@
 # Exercises
 
-
 ## Main exercises
 
 ### 1. Create a stub for a new asset
-**TODO** steps to incorporate the following asset stub and invoke it in the GUI.
+Dagster permits a nice development workflow in which you expand the graph of assets without restarting the tool. Try it out with the following steps.
+
+1. paste the following stub for a new asset into assets.py
 ```Python
 @asset
 def planet_stats(homeworlds_clean: pd.DataFrame) -> pd.DataFrame:
@@ -12,10 +13,14 @@ def planet_stats(homeworlds_clean: pd.DataFrame) -> pd.DataFrame:
     logger.info(homeworlds_clean)  # print the input asset so we can see what's going on during development!
     return homeworlds_clean
 ```
+2. inspect `__init__.py` to see that it gets included in the code (you will find that it is, via `load_assets_from_modules`)
+3. go to [http://localhost:3000/asset-groups](http://localhost:3000/asset-groups) and make the new asset appear by pressing Reload definitions
+4. mark the asset and press Materialize selected
+5. inspect the results in the file data/assets/planet_stats.csv and in the GUI run log corresponding to the materialization, which you can find in at [http://localhost:3000/runs](http://localhost:3000/runs)
 
 
 ### 2. Compute something in the new asset
-**TODO** steps to incorporate the following asset into the asset stub.
+You may have noticed that the asset you added in the previous step doesn't do much - it just passes through the input asset that we already had! Populate the `planet_stats` as in the following, so it actually does compute some statistics. Then, press Reload definitions in the GUI and materialize the asset again, to inspect the resulting file and run log, all the same as in the previous section. To feel completely sure the that the asset definition got reloaded as expected, add some new log message in the asset code and make sure you can find it in the run's log in the Dagster GUI.
 ```Python
 @asset
 def planet_stats(homeworlds_clean: pd.DataFrame) -> pd.DataFrame:
