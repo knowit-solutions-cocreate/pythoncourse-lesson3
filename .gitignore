@@ -4,3 +4,5 @@ lesson2.db
 venv/
 .venv/
 .tool-versions
+data/
+!data/assets/.gitkeep
