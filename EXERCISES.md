@@ -3,7 +3,6 @@
 
 ## Main exercises
 
-
 ### 1. Create a stub for a new asset
 **TODO** steps to incorporate the following asset stub and invoke it in the GUI.
 ```Python
@@ -38,9 +37,14 @@ def planet_stats(homeworlds_clean: pd.DataFrame) -> pd.DataFrame:
     return df
 ```
 
-### 3. Modify the IO-manager
-**TODO** In code: include the PandasCSVIOManager
-**TODO** For an exercise: make the IOManager store stuff as tab-delimited ".tsv" in custom folder instead of as comma-delimited ".csv" in dagster folder, or something similarly challenging
+### 3. Modify the IOManager persistence format
+Writing and reloading of data computed by the assets in this code base is handled by an IOManager defined in io.py. This programming model separates the (data engineering) concern of how data is stored from the (data science) concern of how it is computed.
+
+The current IOManager persists dataframes as comma-separated values. Let's tweak the PandasDataFrameIOManager to work with tab-separated .tsv files instead, as this is a little bit safer (in that fields will be able to contain commas) and may render more readably in our editor.
+
+Hints:
+- study io.py to understand what needs to be modified
+- `to_csv` and `read_csv` can be configured to work with tab-separated format with the right parameters
 
 
 ## Bonus exercises
